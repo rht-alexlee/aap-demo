@@ -1,9 +1,10 @@
 ---
-- name: Read CSV File from /tmp
+- name: Read Attributes for CSV Files
   hosts: localhost
+  gather_facts: false
 
   tasks:
-    - name: read-csv file
+    - name: Read csv file from tmp
       community.general.read_csv:
         path: /tmp/poc-test.csv
         fieldnames: name,user,app1,app2
