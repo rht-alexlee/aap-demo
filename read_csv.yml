@@ -11,5 +11,5 @@
         delimiter: ';'
       register: server
       delegate_to: localhost
-    - debug:
+    - ansible.builtin.debug:
         msg: 'Server name: {{ server.list.1.name }} for application user {{ server.list.1.user }} with application {{ server.list.1.app1 }} , {{ server.list.1.app2 }}'
