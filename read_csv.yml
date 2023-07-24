@@ -1,11 +1,14 @@
 ---
-- hosts: localhost
+- name: Read CSV File from /tmp
+  hosts: localhost
+  
   tasks:
-    - read_csv:
+    - name: read-csv file
+      read_csv:
         path: /tmp/poc-test.csv
         fieldnames: name,user,app1,app2
         delimiter: ';'
-        register: server
-        delegate_to: localhost
+      register: server
+      delegate_to: localhost
     - debug:
         msg: 'Server name: {{ server.list.1.name }} for application user {{ server.list.1.user }} with application {{ server.list.1.app1 }} , {{ server.list.1.app2 }}'
