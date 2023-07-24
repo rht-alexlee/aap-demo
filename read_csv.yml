@@ -6,7 +6,7 @@
   tasks:
     - name: Read csv file from tmp
       community.general.read_csv:
-        path: /tmp/poc-test.csv
+        path: /home/ruser/poc-test.csv
         fieldnames: name,user,app1,app2
         delimiter: ';'
       register: server
