@@ -1,10 +1,10 @@
 ---
 - name: Read CSV File from /tmp
   hosts: localhost
-  
+
   tasks:
     - name: read-csv file
-      read_csv:
+      community.general.read_csv:
         path: /tmp/poc-test.csv
         fieldnames: name,user,app1,app2
         delimiter: ';'
