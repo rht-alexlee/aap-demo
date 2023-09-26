@@ -1,0 +1,53 @@
+- name: Retrieve SSL certificate expiration dates
+
+  hosts: localhost
+
+  gather_facts: false
+
+  tasks:
+
+    - name: Read domain names from file
+
+      command: cat domains.txt
+
+      register: domain_names_output
+
+
+
+    - name: Extract domain names
+
+      set_fact:
+
+        domain_names: "{{ domain_names_output.stdout_lines }}"
+
+
+
+    - name: Retrieve SSL certificate expiration date for each domain
+
+      shell: "echo | openssl s_client -servername {{ item }} -connect {{ item }}:443 2>/dev/null | openssl x509 -noout -enddate"
+
+      register: certificate_output
+
+      with_items: "{{ domain_names }}"
+
+
+
+    - name: Extract certificate expiration dates
+
+      set_fact:
+
+        certificate_expiration_dates: "{{ certificate_output.results | map(attribute='stdout') | map('regex_replace', '^.*notAfter=(.*)$', '\\1') | list }}"
+
+
+
+    - name: Display certificate expiration dates
+
+      debug:
+
+        msg: "The SSL certificate for {{ item.0 }} expires on {{ item.1 }}"
+
+      with_together:
+
+        - "{{ domain_names }}"
+
+        - "{{ certificate_expiration_dates }}"
